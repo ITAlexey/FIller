@@ -11,7 +11,7 @@ CC      := gcc
 
 CFLAGS  := -Wall -Wextra -Werror
 
-HEADERS := $(shell find includes/ -type f -name '*.h' | cut -d "/" - f2)
+HEADERS := $(shell find includes/ -type f -name '*.h' | cut -d "/" -f 2)
 BOOL    := $(shell find srcs/bool/ -type f -name '*.c' | cut -d "/" -f 3)
 CONV    := $(shell find srcs/conv/ -type f -name '*.c' | cut -d "/" -f 3)
 LST     := $(shell find srcs/lst/ -type f -name '*.c' | cut -d "/" -f 3)
