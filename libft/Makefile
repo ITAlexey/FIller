@@ -11,15 +11,15 @@ CC      := gcc
 
 CFLAGS  := -Wall -Wextra -Werror
 
-HEADERS := $(shell find includes/ -type f -name '*.h' | cut -d "/" -f 2)
-BOOL    := $(shell find srcs/bool/ -type f -name '*.c' | cut -d "/" -f 3)
-CONV    := $(shell find srcs/conv/ -type f -name '*.c' | cut -d "/" -f 3)
-LST     := $(shell find srcs/lst/ -type f -name '*.c' | cut -d "/" -f 3)
-MEM     := $(shell find srcs/mem/ -type f -name '*.c' | cut -d "/" -f 3)
-STR     := $(shell find srcs/str/ -type f -name '*.c' | cut -d "/" -f 3)
-PRINTF  := $(shell find srcs/printf/ -type f -name '*.c' | cut -d "/" -f 3)
-OTHERS  := $(shell find srcs/others/ -type f -name '*.c' | cut -d "/" -f 3)
-PUT     := $(shell find srcs/put/ -type f -name '*.c' | cut -d "/" -f 3)
+HEADERS := $(shell find includes/ -type f | cut -d "/" -f 2)
+BOOL    := $(shell find srcs/bool/ -type f | cut -d "/" -f 3)
+CONV    := $(shell find srcs/conv/ -type f | cut -d "/" -f 3)
+LST     := $(shell find srcs/lst/ -type f | cut -d "/" -f 3)
+MEM     := $(shell find srcs/mem/ -type f | cut -d "/" -f 3)
+STR     := $(shell find srcs/str/ -type f | cut -d "/" -f 3)
+PRINTF  := $(shell find srcs/printf/ -type f | cut -d "/" -f 3)
+OTHERS  := $(shell find srcs/others/ -type f | cut -d "/" -f 3)
+PUT     := $(shell find srcs/put/ -type f | cut -d "/" -f 3)
 
 
 LIB_OBJ  = $(addprefix $(OBJ_DIR)/, $(BOOL:%.c=%.o))
