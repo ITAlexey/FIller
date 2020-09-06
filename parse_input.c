@@ -4,68 +4,69 @@
 
 #include "libft.h"
 
-static char 	*retrieve_line(char **line, int size, short is_grid)
+static void 	define_initial_positions(t_game *data)
 {
-	char 	*string;
+	t_point		d;
 
-	string = NULL;
-	if (get_next_line(STDOUT, line))
+	d.y = 0;
+	while (d.y < data->plateau.height)
 	{
-		string = ft_strnew(size);
-		ISNULL(string);
-		ft_strncpy(string, is_grid ? line + 4 : line, size);
+		d.x = 0;
+		while (d.x < data->plateau.width)
+		{
+			if (data->plateau.grid[d.y][d.x] == data->me.id)
+				data->me.start = d;
+			else if (data->plateau.grid[d.y][d.x] == data->enemy.id)
+				data->enemy.start = d;
+			d.x += 1;
+		}
+		d.y += 1;
 	}
-	ft_strdel(input);
-	return (string);
+	data->is_first_entry = 1;
 }
 
-static char 	**record_grid_or_figure(int height, int width, short is_grid)
+static void 	record_data(t_map *token, char *input, int offset)
 {
-	char 	*input;
-	char 	**arr;
+	char	**tmp;
 	int 	index;
 
 	index = 0;
-	arr = (char**)malloc(sizeof(char*) * height + 1);
-	ISNULL(arr);
-	if (is_grid)
+	tmp = ft_strsplit(input, ' ');
+	token->height = ft_atoi(tmp[1]);
+	token->width = ft_atoi(tmp[2]);
+	token->size = token->height * token->width;
+	ft_free2darray(tmp);
+	ft_strdel(&input);
+	if (offset)
 	{
-		get_next_line(STDOUT, input);
-		ft_strdel(input);
-	}
-	while (height)
-	{
-		arr[index++] = retrieve_line(&input, width, is_grid);
-		height--;
-	}
-	return (is_grid ? get_heatmap(arr, height, width) : arr);
-}
-
-static void 	record_height_and_width(int *height, int *width)
-{
-	char 	*input;
-	char 	**splitted_input;
-
-	input = NULL;
-	if (get_next_line(STDOUT, &input))
-	{
-		splitted_input = ft_strsplit(input, ' ');
-		*height = ft_atoi(splitted_input[1]);
-		*width = ft_atoi(splitted_input[2]);
-		ft_free2darray(splitted_input);
+		get_next_line(STDOUT, &input)
 		ft_strdel(&input);
 	}
-	else
+	token->map = ft_memalloc(sizeof(char*) * token->height + 1);
+	ISNOTNULL(token->map);
+	token->map[token->height] = NULL;
+	while (get_next_line(STDOUT, &input) >= 0)
 	{
+		token->map[index] = ft_strdup(line + offset);
+		ISNOTNULL(token->map[index++]);
 		ft_strdel(&input);
-		ft_printf("Error %s\n", strerror(99));
 	}
 }
 
-void 	parse_input(t_gamedata data)
+void 	parse_input(t_game data)
 {
-	record_height_and_width(&data.map.height, &data.map.width);
-	data.map.grid = record_grid_or_figure(data.map.height, data.map.width, 1);
-	record_height_and_width(&data.token.height, &data.token.width);
-	data.token.figure = record_grid_or_figure(data.token.height, data.token.width, 0);
+	char 	*line;
+
+	while (get_next_line(STDOUT, &line) >= 0 && line != NULL)
+	{
+		if (!ft_strncmp(line, "Plateau", 8))
+		{
+			record_data(&data.plateau, line, 4);
+			if (!data.is_first_entry)
+				define_initial_positions(&data);
+		}
+		else if (!ft_strncmp(line, "Piece", 7))
+			record_data(&data.piece, line, 0);
+		ft_strdel(&line);
+	}
 }

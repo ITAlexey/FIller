@@ -5,7 +5,7 @@
 
 int 	main(void)
 {
-	t_gamedata	data;
+	t_game		data;
 	char 		*input;
 	short 		game_running;
 
@@ -14,8 +14,8 @@ int 	main(void)
 	if (get_next_line(STDOUT, &input) && input && ft_strlen(input) > 10
 		&& !ft_strncmp(input, "$$$ exec p", 9) && (input[10] == '1' || input[10] == '2' ))
 	{
-		data.my_id = input[10] == '1' ? 'O' : 'X';
-		data.enemy_id = data.my_id == 'O' ? : 'X' : 'O';
+		data.me.id = input[10] == '1' ? 'O' : 'X';
+		data.enemy.id = data.me.id == 'O' ? : 'X' : 'O';
 		ft_strdel(&input);
 		while (game_running)
 		{

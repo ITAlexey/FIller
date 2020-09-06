@@ -7,26 +7,35 @@
 # include "libft.h"
 # define STDOUT 0
 
+typedef struct	s_point
+{
+	int 		x;
+	int 		y;
+}				t_point;
+
+typedef struct	s_player
+{
+	int 		id;
+	t_point		start;
+	t_point 	*positions;
+}				t_player;
+
 typedef struct	s_map
 {
 	int 		height;
 	int 		width;
+	int 		size;
 	char 		**grid;
 }				t_map;
 
-typedef struct	s_token
+typedef struct	s_game
 {
-	int 		height;
-	int 		width;
-	char 		**figure;
-}				t_token;
+	short 		is_first_entry;
+	t_map		plateau;
+	t_map		piece;
+	t_player	me;
+	t_player	enemy;
 
-typedef struct	s_gamedata
-{
-	char 		my_id;
-	char 		enemy_id;
-	t_map		map;
-	t_token		token;
-}				t_gamedata;
+}				t_game;
 
 #endif
