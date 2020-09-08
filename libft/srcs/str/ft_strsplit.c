@@ -23,54 +23,36 @@ static char			**free_splitted_str(char **str, long pos)
 	return (str);
 }
 
-static long			count_letters_in_word(char const *s, long *offset, char dil)
+static int			counter(char const *str, int dil, short to_skip)
 {
-	int		is_in_word;
-	long	counter;
-	long	start;
+	int	i;
 
-	counter = 0;
-	start = 0;
-	is_in_word = OUT;
-	while (s[start] != '\0')
-	{
-		if (s[start] != dil)
-		{
-			if (is_in_word == OUT)
-				*(offset) += start;
-			is_in_word = IN;
-			counter++;
-		}
-		else if (is_in_word == IN)
-			break ;
-		start++;
-	}
-	return (counter);
+	i = 0;
+	while (str[i] != '\0' && (to_skip ? str[i] == dil : str[i] != dil))
+		i++;
+	return (i);
 }
 
 char				**ft_strsplit(char const *str, char c)
 {
-	long	nbr_of_words;
-	long	i;
+	int		words;
+	int		i;
 	char	**splitted_str;
-	long	nbr_of_letters;
-	long	offset;
+	int		letters;
 
 	i = 0;
-	offset = 0;
 	if (str == NULL)
 		return (NULL);
-	nbr_of_words = ft_count_words(str, c);
-	if (!(splitted_str = (char**)malloc(sizeof(char*) * (nbr_of_words + 1))))
+	words = ft_count_words(str, c);
+	if (!(splitted_str = (char**)ft_memalloc(sizeof(char*) * words + 1)))
 		return (NULL);
-	while (i < nbr_of_words)
+	while (*str != '\0' && i < words)
 	{
-		nbr_of_letters = count_letters_in_word(str, &offset, c);
-		str += offset;
-		if (!(splitted_str[i] = ft_strsub(str, 0, nbr_of_letters)))
+		str += counter(str, c, 1);
+		letters = counter(str, c, 0);
+		if (!(splitted_str[i] = ft_strsub(str, 0, letters)))
 			return (free_splitted_str(splitted_str, i));
-		str += nbr_of_letters;
-		offset = 0;
+		str += letters;
 		i++;
 	}
 	splitted_str[i] = NULL;

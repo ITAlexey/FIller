@@ -30,7 +30,7 @@ size_t		ft_count_words(const char *str, int c)
 				counter++;
 				is_word = IN;
 			}
-			else if (is_word == IN)
+			else if (*str == c && is_word == IN)
 				is_word = OUT;
 			str++;
 		}
