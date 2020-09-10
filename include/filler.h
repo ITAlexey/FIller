@@ -15,9 +15,9 @@ typedef struct	s_point
 
 typedef struct	s_player
 {
-	int 		id;
-	t_point		start;
+	char 		id;
 	t_point 	*positions;
+	int 		size;
 }				t_player;
 
 typedef struct	s_map
@@ -30,10 +30,10 @@ typedef struct	s_map
 
 typedef struct	s_game
 {
-	short 		is_first_entry;
+	int 		**heatmap;
 	t_map		plateau;
 	t_map		piece;
-	t_player	me;
+	t_player	player;
 	t_player	enemy;
 
 }				t_game;
