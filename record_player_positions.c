@@ -42,6 +42,7 @@ void 	record_player_positions(t_map plateau, t_player *player)
 		{
 			if (ft_toupper(plateau.grid[d.y][d.x]) == player->id)
 				player->positions[index++] = d;
+			d.x++;
 		}
 		d.y++;
 	}

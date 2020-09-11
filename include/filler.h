@@ -30,7 +30,6 @@ typedef struct	s_map
 
 typedef struct	s_game
 {
-	int 		**heatmap;
 	t_map		plateau;
 	t_map		piece;
 	t_player	player;
