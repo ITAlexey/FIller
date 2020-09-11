@@ -2,6 +2,8 @@
 // Created by alexey on 11.09.2020.
 //
 
+#include "filler.h"
+
 static inline int 	calculate_distance(t_point a, t_point b)
 {
 	return (ABC(a.x - b.x) + ABC(a.y - b.y));
@@ -36,7 +38,6 @@ int	 	**get_heatmap(t_map plateau, t_player me, t_player enemy)
 		d.x = 0;
 		heatmap[d.y] = (int*)ft_memalloc(sizeof(int) * plateau.width);
 		ISNOTNULL(heatmap[d.y]);
-		ft_bzero(heatmap[d.y]);
 		while (d.x < plateau.width)
 		{
 			if (ft_toupper(plateau.grid[d.y][d.x]) == me.id)

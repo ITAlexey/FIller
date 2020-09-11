@@ -4,7 +4,7 @@
 
 #include "filler.h"
 
-static int	define_nbr_of_elements(t_map plateau, char player_id)
+int		define_nbr_of_elements(t_map plateau, char player_id)
 {
 	t_point		d;
 	int 		counter;

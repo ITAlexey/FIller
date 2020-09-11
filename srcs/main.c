@@ -16,12 +16,10 @@ int 	main(void)
 	{
 		data.me.id = input[10] == '1' ? 'O' : 'X';
 		data.enemy.id = data.me.id == 'O' ? : 'X' : 'O';
+		data.token.id = STAR;
 		ft_strdel(&input);
 		while (game_running)
-		{
-			parse_input(data);
-			game_running = fill_grid(data);
-		}
+			game_running = parse_input(data);
 	}
 	return (0);
 }

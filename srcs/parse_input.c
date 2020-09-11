@@ -49,7 +49,8 @@ void 	parse_input(t_game data)
 		else if (!ft_strncmp(line, "Piece", 7))
 		{
 			record_data(&data.piece, line, 0);
-
+			record_token_positions(&data.token, data.piece);
+			return (place_token(data, heatmap));
 		}
 		ft_strdel(&line);
 	}
