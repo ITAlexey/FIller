@@ -25,18 +25,10 @@ int		define_nbr_of_elements(t_map map, char id)
 	return (counter);
 }
 
-static void		align_by_left_edge(t_point *node, t_point border)
+static inline void		align_by_left_edge(t_point *node, t_point border)
 {
-	while (border.y)
-	{
-		node->y--;
-		border.y--;
-	}
-	while (border.x)
-	{
-		node->x--;
-		border.x--;
-	}
+	node->x -= border.x;
+	node->y -= border.y;
 }
 
 void	record_token_positions(t_map peace, t_token *token)

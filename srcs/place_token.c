@@ -4,15 +4,25 @@
 
 #include "filler.h"
 
-t_point	find_best_position(t_point my_node, int **heatmap, t_map plateau, t_map token)
+/*restrictions:
+* must overlap only one cell of player me
+* can't overlap enemy cells
+* must be within the boundaries of plateau
+*/
+
+t_point		find_best_place(t_point my_node, int **heatmap, t_game data)
 {
 	t_point		dot;
+	int 		sum;
+	int 		index;
 
-	/*restrictions:
-	 * must overlap only one cell of player me
-	 * can't overlap enemy cells
-	 * must be within the boundaries of plateau
-	*/
+	index = 0;
+	sum = 132;
+	while (index < data.token.size)
+	{
+
+	}
+
 }
 
 int 	place_token(t_game data, int **heatmap)
@@ -22,7 +32,7 @@ int 	place_token(t_game data, int **heatmap)
 
 	index = 0;
 	while (index < data.me.size)
-		candidate = find_best_position(data.me.positions[index++], heatmap, data.plateau, data.peace);
+		candidate = find_best_place(data.me.positions[index++], heatmap, data);
 	if (is_valid_position(candidate))
 	{
 		ft_printf("%d, %d\n", candidate.y, candidate.x);
