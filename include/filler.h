@@ -27,8 +27,7 @@ typedef struct	s_token
 	char 		id;
 	int 		size;
 	t_point 	*positions;
-	int 		min_x;
-	int 		min_y;
+	t_point		min;
 }				t_token;
 
 typedef struct	s_map
