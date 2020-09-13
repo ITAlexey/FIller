@@ -23,18 +23,67 @@ static inline short 	is_out_of_borders(t_point node, t_map map)
 		|| node.x >= map.width || node.y >= map.height);
 }
 
-t_point		*accommodate_token(t_token token, diff, t_map map)
+static inline short 	is_on_same_positions(t_point a, t_point b)
+{
+	return (!(a.x - b.x && a.y - b.y));
+}
+
+short 		is_overlap_enemy(t_point *nodes, int size, t_player enemy)
+{
+	int 	i;
+	int 	j;
+
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < enemy.size)
+		{
+			if (is_on_same_positions(nodes[i], enemy.positions[j]))
+				return (TRUE);
+			j++;
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
+short 		is_one_align_overlap(t_point *nodes, int size, t_player player)
+{
+	int 	i;
+	int 	j;
+	int 	count_overlaps;
+
+	count_overlaps = 0;
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < player.size)
+		{
+			if (is_on_same_position(nodes[i], player.positions[j]))
+				count_overlaps++;
+			j++;
+		}
+		i++;
+	}
+	return (count_overlaps == 1 ? TRUE : FALSE);
+}
+
+t_point		*try_place(t_token token, t_point diff, t_map map)
 {
 	t_point		*tmp;
 	int 		index;
 
 	index = 0;
-	tmp = (t_point*)ft_memalloc(sizeof(t_point) * token.size);
+	tmp = (t_point*)ft_memalloc(sizeof(t_point) * token.cells);
 	ISNOTNULL(tmp);
-	while (index < token.size)
+	while (index < token.cells)
 	{
-		tmp[index] = place_cell(diff, data.token.positions[index]);
-		if (is_out_of_borders(tmp[index], map))
+		tmp[index].x = token.positions[index].x + diff.x;
+		tmp[index].y = token.positions[index].y + diff.y;
+		if (is_out_of_borders(tmp[index], map) && !is_overlap_enemy(data.token, data.enemy)
+			&& is_one_align_overlap(nodes, data.token.size, data.me))
 		{
 			ft_memdel(&tmp);
 			break ;
@@ -44,85 +93,38 @@ t_point		*accommodate_token(t_token token, diff, t_map map)
 	return (tmp);
 }
 
-short 		is_overlap_enemy(t_point *nodes, int size, t_player enemy)
-{
-	int 	j;
-	int 	i;
-
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		while (j < enemy.size)
-		{
-			if (nodes[i].x - enemy[j].x && nodes[i].y - enemy[j].y)
-				return (TRUE);
-			j++;
-		}
-		i++;
-	}
-	return (FALSE);
-}
-
-short 		check_boundary_conditions(t_game data, t_point node)
+void 		get_valid_states(t_game data, t_token *token, t_point node)
 {
 	t_point diff;
-	t_point	*nodes;
-	int 	align_overlap;
 	int 	i;
+	t_point	*valid_state;
 
+	data.token.placed_tokens = (t_point**)ft_memalloc(sizeof(t_point*) * token.cells);
+	ISNOTNULL(data.token.placed_tokens);
+	data.token.valid_pos = 0;
 	i = 0;
-	align_overlap = 0;
-	while (i < data.token.size)
+	nodes = NULL;
+	while (i < data.token.cells)
 	{
-		if ((diff = place_cell(data.token.positions[i++], node))
-				&& !is_out_of_borders(diff, data.plateau))
-		{
-			if (nodes = accommodate_token(data.token, diff, data.plateau))
-			{
-				is_overlap_enemy(nodes, data.token.size, data.enemy)
-			}
-		}
+		diff = place_cell(data.token.positions[i], node);
+		if (!is_out_of_borders(diff, data.plateau) &&
+			get_valid_states(data, node, diff, &valid_state)) && valid_state)
+			data.token.placed_tokens[valid_pos++] = valid_state;
+		i++;
 	}
 }
 
-t_point		find_best_place(t_point my_node, int **heatmap, t_game data)
+int 	place_token(t_game data)
 {
-	t_point		dot;
-	int 		sum;
-	int 		index;
+	int		index;
 
-	index = 0;
-	sum = 132;
-	while (index < data.token.size)
-	{
-
-	}
-
-}
-
-int 	place_token(t_game data, int **heatmap)
-{
-	int 	index;
-	t_point	candidate;
-
-	index = 0;
+	index  = 0
 	while (index < data.me.size)
 	{
-		if (!check_boundary_conditions(data, data.me.positions[index]))
-			candidate = find_best_place(data.me.positions[index], heatmap, data);
-		index++;
-	}
-	if (is_valid_position(candidate))
-	{
-		ft_printf("%d, %d\n", candidate.y, candidate.x);
-		// free_struct();
-		return (1);
-	}
-	else
-	{
-		ft_printf("%d, %d\n", 0, 0)
-		// free_struct();
-		return (0);
+		if (get_valid_states(data, &data.token, data.me.positions[index++])
+			&& data.token.placed_tokens)
+		{
+			//find_best;
+		}
 	}
 }

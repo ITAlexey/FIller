@@ -35,7 +35,6 @@ static void 	record_data(t_map *token, char *input, int offset)
 void 	parse_input(t_game data)
 {
 	char 	*line;
-	int 	**heatmap;
 
 	while (get_next_line(STDOUT, &line) >= 0 && line != NULL)
 	{
@@ -44,13 +43,13 @@ void 	parse_input(t_game data)
 			record_data(&data.plateau, line, 4);
 			record_player_positions(data.plateau, &data.me);
 			record_player_positions(data.plateau, &data.enemy);
-			heatmap = get_heatmap(data.plateau, data.me, data.enemy);
+			data->heatmap = get_heatmap(data.plateau, data.me, data.enemy);
 		}
 		else if (!ft_strncmp(line, "Piece", 7))
 		{
 			record_data(&data.piece, line, 0);
 			record_token_positions(&data.token, data.piece);
-			return (place_token(data, heatmap));
+			return (place_token(data));
 		}
 		ft_strdel(&line);
 	}

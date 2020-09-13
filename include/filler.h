@@ -24,10 +24,10 @@ typedef struct	s_player
 
 typedef struct	s_token
 {
-	char 		id;
-	int 		size;
+	int 		cells;
 	t_point 	*positions;
-	t_point		min;
+	t_point		**placed_tokens;
+	int 		valid_pos;
 }				t_token;
 
 typedef struct	s_map
@@ -41,8 +41,9 @@ typedef struct	s_map
 typedef struct	s_game
 {
 	t_map		plateau;
+	int 		**heatmap;
 	t_map		piece;
-	t_player	player;
+	t_player	me;
 	t_player	enemy;
 	t_token		token;
 

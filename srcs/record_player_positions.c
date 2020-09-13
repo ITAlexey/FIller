@@ -34,23 +34,24 @@ static inline void		align_by_left_edge(t_point *node, t_point border)
 void	record_token_positions(t_map peace, t_token *token)
 {
 	t_point		d;
+	t_point		min;
 
-	token->size = define_nbr_of_elements(peace, token->id);
+	token->size = define_nbr_of_elements(peace, STAR);
 	token->positions = (t_point*)ft_memalloc(sizeof(t_point) * token->size);
 	ISNOTNULL(token->positions);
-	token->min.x = peace.width;
-	token->min.y = peace.height;
+	min.x = peace.width;
+	min.y = peace.height;
 	d.y = 0;
 	while (d.y < peace.height)
 	{
 		d.x = 0;
 		while (d.x < peace.width)
 		{
-			if (peace.gird[d.y][d.x] == token->id)
+			if (peace.gird[d.y][d.x] == STAR)
 			{
 				token->positions[d.y] = d;
-				token->min.x = MIN(min.x, d.x);
-				token->min.y = MIN(min.y, d.y);
+				min.x = MIN(min.x, d.x);
+				min.y = MIN(min.y, d.y);
 			}
 			d.x++;
 		}
@@ -58,7 +59,7 @@ void	record_token_positions(t_map peace, t_token *token)
 	}
 	d.y = 0;
 	while (d.y < token->size)
-		align_by_left_edge(&token->position[d.y++], token->min)
+		align_by_left_edge(&token->position[d.y++], min)
 }
 
 void 	record_player_positions(t_map plateau, t_player *player)
