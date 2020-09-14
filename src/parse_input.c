@@ -46,22 +46,10 @@ int 	parse_input(t_game data)
 		{
 			record_data(&data.piece, line, 0);
 			record_token_positions(&data.token, data.piece);
-			//return (place_token(data));
+			return (place_token(data));
 		}
 		else
 			ft_strdel(&line);
 	}
-	/*for (int i = 0; i < data.plateau.height; i++)
-	{
-		for (int j = 0; j < data.plateau.width; j++)
-			printf("%3d", data.heatmap[i][j]);
-		printf("\n");
-	}*/
-	ft_2dmemdel((void**)data.plateau.grid, data.plateau.height);
-	ft_2dmemdel((void**)data.piece.grid, data.piece.height);
-	ft_memdel((void**)&data.me.positions);
-	ft_memdel((void**)&data.enemy.positions);
-	ft_2dmemdel((void**)data.heatmap, data.plateau.height);
-	ft_memdel((void**)&data.token.positions);
 	return (0);
 }

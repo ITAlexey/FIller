@@ -19,19 +19,25 @@ int 	main(void)
 	char 		*input;
 	short 		game_running;
 
-	open("test2.txt", O_RDONLY);
 	game_running = TRUE;
 	input = NULL;
-	if (get_next_line(STDOUT, &input) && input && ft_strlen(input) > 10
-		&& !ft_strncmp(input, "$$$ exec p", 10) && (input[10] == '1' || input[10] == '2' ))
+	open("res.txt", O_RDONLY);
+	while (get_next_line(STDOUT, &input) >= 0)
 	{
-		data.me.id = input[10] == '1' ? 'O' : 'X';
-		data.enemy.id = data.me.id == 'O' ? 'X' : 'O';
-		ft_strdel(&input);
-		while (game_running)
-			game_running = parse_input(data);
+		if (ft_strlen(input) > 10 && !ft_strncmp(input, "$$$ exec p", 10)
+			&& (input[10] == '1' || input[10] == '2'))
+		{
+			data.me.id = input[10] == '1' ? 'O' : 'X';
+			data.enemy.id = data.me.id == 'O' ? 'X' : 'O';
+			ft_strdel(&input);
+			while (game_running)
+				game_running = parse_input(data);
+			break ;
+		}
+		else
+			ft_strdel(&input);
 	}
-	close(STDOUT);
+	close(3);
 	return (0);
 }
 

@@ -1,5 +1,5 @@
 dshala.filler
-
+*.txt
 *.idea/
 # Prerequisites
 *.d
