@@ -23,11 +23,10 @@ int 	main(void)
 	game_running = TRUE;
 	input = NULL;
 	if (get_next_line(STDOUT, &input) && input && ft_strlen(input) > 10
-		&& !ft_strncmp(input, "$$$ exec p", 9) && (input[10] == '1' || input[10] == '2' ))
+		&& !ft_strncmp(input, "$$$ exec p", 10) && (input[10] == '1' || input[10] == '2' ))
 	{
 		data.me.id = input[10] == '1' ? 'O' : 'X';
 		data.enemy.id = data.me.id == 'O' ? 'X' : 'O';
-		printf("%c\n", data.me.id);
 		ft_strdel(&input);
 		while (game_running)
 			game_running = parse_input(data);

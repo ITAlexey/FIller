@@ -6,15 +6,12 @@
 
 static void 	record_data(t_map *map, char *input, int offset)
 {
-	char	**tmp;
 	int 	index;
 
 	index = 0;
-	tmp = ft_strsplit(input, ' ');
-	map->height = ft_atoi(tmp[1]);
-	map->width = ft_atoi(tmp[2]);
+	map->height = ft_atoi(ft_strchr(input, ' '));
+	map->width = ft_atoi(ft_strchr(ft_strchr(input, ' ') + 1, ' '));
 	map->size = map->height * map->width;
-	ft_free2darray((void**)tmp);
 	ft_strdel(&input);
 	if (offset)
 	{
@@ -23,7 +20,7 @@ static void 	record_data(t_map *map, char *input, int offset)
 	}
 	map->grid = (char **)ft_memalloc(sizeof(char*) * map->height);
 	ISNOTNULL(map->grid);
-	while (get_next_line(STDOUT, &input) >= 0)
+	while (index < map->height && get_next_line(STDOUT, &input) > 0)
 	{
 		map->grid[index] = ft_strdup(input + offset);
 		ISNOTNULL(map->grid[index++]);
@@ -36,7 +33,7 @@ int 	parse_input(t_game data)
 {
 	char 	*line;
 
-	while (get_next_line(STDOUT, &line) >= 0 && line != NULL)
+	while (get_next_line(STDOUT, &line) > 0)
 	{
 		if (!ft_strncmp(line, "Plateau", 7))
 		{
@@ -45,14 +42,26 @@ int 	parse_input(t_game data)
 			record_player_positions(data.plateau, &data.enemy);
 			data.heatmap = get_heatmap(data.plateau, data.me, data.enemy);
 		}
-		else if (!ft_strncmp(line, "Piece", 6))
+		else if (!ft_strncmp(line, "Piece", 5))
 		{
-			printf("got1\n");
 			record_data(&data.piece, line, 0);
 			record_token_positions(&data.token, data.piece);
-			return (place_token(data));
+			//return (place_token(data));
 		}
-		ft_strdel(&line);
+		else
+			ft_strdel(&line);
 	}
+	/*for (int i = 0; i < data.plateau.height; i++)
+	{
+		for (int j = 0; j < data.plateau.width; j++)
+			printf("%3d", data.heatmap[i][j]);
+		printf("\n");
+	}*/
+	ft_2dmemdel((void**)data.plateau.grid, data.plateau.height);
+	ft_2dmemdel((void**)data.piece.grid, data.piece.height);
+	ft_memdel((void**)&data.me.positions);
+	ft_memdel((void**)&data.enemy.positions);
+	ft_2dmemdel((void**)data.heatmap, data.plateau.height);
+	ft_memdel((void**)&data.token.positions);
 	return (0);
 }
