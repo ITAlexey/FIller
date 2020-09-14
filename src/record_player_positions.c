@@ -4,14 +4,14 @@
 
 #include "filler.h"
 
-int		define_nbr_of_elements(t_map map, char id)
+static int		define_nbr_of_elements(t_map map, char id)
 {
 	t_point		d;
 	int 		counter;
 
 	counter = 0;
 	d.y = 0;
-	while (d.y < map.heigth)
+	while (d.y < map.height)
 	{
 		d.x = 0;
 		while (d.x < map.width)
@@ -31,13 +31,13 @@ static inline void		align_by_left_edge(t_point *node, t_point border)
 	node->y -= border.y;
 }
 
-void	record_token_positions(t_map peace, t_token *token)
+void	record_token_positions(t_token *token, t_map peace)
 {
 	t_point		d;
 	t_point		min;
 
-	token->size = define_nbr_of_elements(peace, STAR);
-	token->positions = (t_point*)ft_memalloc(sizeof(t_point) * token->size);
+	token->cells = define_nbr_of_elements(peace, STAR);
+	token->positions = (t_point*)ft_memalloc(sizeof(t_point) * token->cells);
 	ISNOTNULL(token->positions);
 	min.x = peace.width;
 	min.y = peace.height;
@@ -47,7 +47,7 @@ void	record_token_positions(t_map peace, t_token *token)
 		d.x = 0;
 		while (d.x < peace.width)
 		{
-			if (peace.gird[d.y][d.x] == STAR)
+			if (peace.grid[d.y][d.x] == STAR)
 			{
 				token->positions[d.y] = d;
 				min.x = MIN(min.x, d.x);
@@ -58,15 +58,15 @@ void	record_token_positions(t_map peace, t_token *token)
 		d.y++;
 	}
 	d.y = 0;
-	while (d.y < token->size)
-		align_by_left_edge(&token->position[d.y++], min)
+	while (d.y < token->cells)
+		align_by_left_edge(&token->positions[d.y++], min);
 }
 
 void 	record_player_positions(t_map plateau, t_player *player)
 {
 	t_point		d;
 
-	player->size = define_nbr_of_elements(plateau, player.id);
+	player->size = define_nbr_of_elements(plateau, player->id);
 	player->positions = (t_point*)ft_memalloc(sizeof(t_point) * player->size);
 	ISNOTNULL(player->positions);
 	d.y = 0;

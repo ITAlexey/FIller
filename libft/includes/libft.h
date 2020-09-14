@@ -111,5 +111,6 @@ char				*ft_uitoa_base(unsigned long long n, unsigned base);
 char				*sum(char *a, char *b, unsigned len_a, unsigned len_b);
 char				*multiplication(char *a, char *b, unsigned len_a,
 					unsigned len_b);
+void				ft_2dmemdel(void **ap, size_t size);
 
 #endif

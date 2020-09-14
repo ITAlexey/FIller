@@ -4,35 +4,35 @@
 
 #include "filler.h"
 
-static void 	record_data(t_map *token, char *input, int offset)
+static void 	record_data(t_map *map, char *input, int offset)
 {
 	char	**tmp;
 	int 	index;
 
 	index = 0;
 	tmp = ft_strsplit(input, ' ');
-	token->height = ft_atoi(tmp[1]);
-	token->width = ft_atoi(tmp[2]);
-	token->size = token->height * token->width;
-	ft_free2darray(tmp);
+	map->height = ft_atoi(tmp[1]);
+	map->width = ft_atoi(tmp[2]);
+	map->size = map->height * map->width;
+	ft_free2darray((void**)tmp);
 	ft_strdel(&input);
 	if (offset)
 	{
-		get_next_line(STDOUT, &input)
+		get_next_line(STDOUT, &input);
 		ft_strdel(&input);
 	}
-	token->map = (char **)ft_memalloc(sizeof(char*) * token->height);
-	ISNOTNULL(token->map);
+	map->grid = (char **)ft_memalloc(sizeof(char*) * map->height);
+	ISNOTNULL(map->grid);
 	while (get_next_line(STDOUT, &input) >= 0)
 	{
-		token->map[index] = ft_strdup(line + offset);
-		ISNOTNULL(token->map[index++]);
+		map->grid[index] = ft_strdup(input + offset);
+		ISNOTNULL(map->grid[index++]);
 		ft_strdel(&input);
 	}
 }
 
 
-void 	parse_input(t_game data)
+int 	parse_input(t_game data)
 {
 	char 	*line;
 
@@ -53,4 +53,5 @@ void 	parse_input(t_game data)
 		}
 		ft_strdel(&line);
 	}
+	return (0);
 }

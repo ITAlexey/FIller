@@ -11,8 +11,8 @@ static short 	is_out_of_borders(t_point *nodes, int size, t_map map)
 	i = 0;
 	while (i < size)
 	{
-		if (nodes[i]->x < 0 || nodes[i]->y < 0
-			|| nodes[i]->x >= map.width || nodes[i]->y >= map.height)
+		if (nodes[i].x < 0 || nodes[i].y < 0
+			|| nodes[i].x >= map.width || nodes[i].y >= map.height)
 			return (TRUE);
 		i++;
 	}
@@ -57,7 +57,7 @@ static short 		is_one_align_overlap(t_point *nodes, int size, t_player player)
 		j = 0;
 		while (j < player.size)
 		{
-			if (is_on_same_position(nodes[i], player.positions[j]))
+			if (is_on_same_positions(nodes[i], player.positions[j]))
 				count_overlaps++;
 			j++;
 		}
@@ -75,6 +75,6 @@ short 		check_boundary_conditions(t_game data, t_point *valid_nodes)
 		&& !is_overlap_enemy(valid_nodes, size, data.enemy)
 		&& is_one_align_overlap(valid_nodes, size, data.me))
 		return (TRUE);
-	ft_memdel(&valid_nodes);
+	ft_memdel((void**)&valid_nodes);
 	return (FALSE);
 }
