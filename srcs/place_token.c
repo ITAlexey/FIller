@@ -4,12 +4,6 @@
 
 #include "filler.h"
 
-/*restrictions:
-* must overlap only one cell of player me
-* can't overlap enemy cells
-* must be within the boundaries of plateau
-*/
-
 static inline t_point	get_distance(t_point token, t_point node)
 {
 	node.x -= token.x;
@@ -46,20 +40,48 @@ t_point 	**get_valid_states(t_game data, t_point node, int *valid_pos, int index
 	}
 }
 
+t_point		find_best_place(t_token token, int *min_sum, int **heatmap)
+{
+	t_point		d;
+	t_point		candidate;
+	int 		sum;
+
+	d.i = 0;
+	while (d.i < token.valid_pos)
+	{
+		d.j = 0;
+		sum = 0;
+		while (d.j < token.cells)
+		{
+			candidate = token.placed_tokens[d.i][d.j];
+			sum += heatmap[candidate.y][candidate.x];
+			d.j++;
+		}
+		if (sum < *min_sum)
+		{
+			*min_sum = sum;
+			candidate = token.placed_tokens[d.i][0];
+		}
+		d.i++;
+	}
+	return (candidate);
+}
+
 int 	place_token(t_game data)
 {
 	int		index;
+	int 	min_sum;
+	t_point	candidate;
 
-	index = 0
+	index = 0;
+	min_sum = data.token.cells * data.plateau.size;
 	while (index < data.me.size)
 	{
 		data.token.placed_tokens = (t_point**)ft_memalloc(sizeof(t_point*) * data.token.cells);
 		ISNOTNULL(data.token.placed_tokens);
 		data.token.valid_pos = 0;
 		if (get_valid_states(data, data.me.positions[index++], &data.token.valid_pos, 0))
-		{
-			//find_best;
-		}
-		//delete_placed_tokens
+			candidate = find_best_place(data.token, &min_sum, data.heatmap);
+		ft_2dmemdel((void**)data.token.placed_tokens, data.token.cells);
 	}
 }
