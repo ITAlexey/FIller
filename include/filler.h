@@ -6,7 +6,7 @@
 # define FILLER_H
 # include "libft.h"
 # include "stdio.h"
-# define STDOUT 0
+# define STDOUT 3
 # define STAR 42
 # define ISNOTNULL(x) if ((x) == NULL) perror("NULL");
 

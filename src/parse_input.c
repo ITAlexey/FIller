@@ -38,15 +38,16 @@ int 	parse_input(t_game data)
 
 	while (get_next_line(STDOUT, &line) >= 0 && line != NULL)
 	{
-		if (!ft_strncmp(line, "Plateau", 8))
+		if (!ft_strncmp(line, "Plateau", 7))
 		{
 			record_data(&data.plateau, line, 4);
 			record_player_positions(data.plateau, &data.me);
 			record_player_positions(data.plateau, &data.enemy);
 			data.heatmap = get_heatmap(data.plateau, data.me, data.enemy);
 		}
-		else if (!ft_strncmp(line, "Piece", 7))
+		else if (!ft_strncmp(line, "Piece", 6))
 		{
+			printf("got1\n");
 			record_data(&data.piece, line, 0);
 			record_token_positions(&data.token, data.piece);
 			return (place_token(data));

@@ -19,6 +19,7 @@ int 	main(void)
 	char 		*input;
 	short 		game_running;
 
+	open("test2.txt", O_RDONLY);
 	game_running = TRUE;
 	input = NULL;
 	if (get_next_line(STDOUT, &input) && input && ft_strlen(input) > 10
@@ -26,10 +27,12 @@ int 	main(void)
 	{
 		data.me.id = input[10] == '1' ? 'O' : 'X';
 		data.enemy.id = data.me.id == 'O' ? 'X' : 'O';
+		printf("%c\n", data.me.id);
 		ft_strdel(&input);
 		while (game_running)
 			game_running = parse_input(data);
 	}
+	close(STDOUT);
 	return (0);
 }
 
