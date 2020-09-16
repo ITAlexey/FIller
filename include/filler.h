@@ -47,6 +47,7 @@ typedef struct	s_game
 	t_player	me;
 	t_player	enemy;
 	t_token		token;
+	t_point		*result;
 
 }				t_game;
 

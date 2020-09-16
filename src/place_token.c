@@ -43,7 +43,7 @@ static t_point 	**get_valid_states(t_game data, t_point node, int *valid_pos, in
 	}
 }
 
-static t_point		find_best_place(t_token token, int *min_sum, int **heatmap)
+static void		find_best_place(t_token token, int *min_sum, int **heatmap, t_point *res)
 {
 	t_point		d;
 	t_point		candidate;
@@ -63,22 +63,22 @@ static t_point		find_best_place(t_token token, int *min_sum, int **heatmap)
 		if (sum < *min_sum)
 		{
 			*min_sum = sum;
-			candidate = token.placed_tokens[d.y][0];
+			res->x = token.placed_tokens[d.y][0].x;
+			res->y = token.placed_tokens[d.y][0].y;
 		}
 		d.y++;
 	}
-	return (candidate);
 }
 
 int 	place_token(t_game data)
 {
 	int		index;
 	int 	min_sum;
-	t_point	candidate;
+	short 	is_match;
 
 	index = 0;
-	candidate.x = -1;
-	candidate.y = -1;
+	is_match = FALSE;
+	data.result = (t_point*)ft_memalloc(sizeof(t_point));
 	min_sum = data.token.cells * data.plateau.size;
 	while (index < data.me.size)
 	{
@@ -86,9 +86,14 @@ int 	place_token(t_game data)
 		ISNOTNULL(data.token.placed_tokens);
 		data.token.valid_pos = 0;
 		if (get_valid_states(data, data.me.positions[index++], &data.token.valid_pos, 0))
-			candidate = find_best_place(data.token, &min_sum, data.heatmap);
+		{
+			is_match = TRUE;
+			find_best_place(data.token, &min_sum, data.heatmap, data.result);
+		}
 		ft_2dmemdel((void**)data.token.placed_tokens, data.token.cells);
 	}
+	is_match ? ft_printf("%d %d\n", data.result->y, data.result->x)
+		: ft_printf("%d %d\n", 0, 0);
 	free_data_game(data);
-	return (candidate.x < 0 || candidate.y < 0 ? 0 : ft_printf("%d %d\n", candidate.y, candidate.x));
+	return (is_match ? TRUE : FALSE);
 }
