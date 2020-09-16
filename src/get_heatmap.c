@@ -1,19 +1,28 @@
-//
-// Created by alexey on 11.09.2020.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_heatmap.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dshala <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/08 18:05:27 by dshala            #+#    #+#             */
+/*   Updated: 2019/09/16 20:17:43 by dshala           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "filler.h"
 
-static inline int 	calculate_distance(t_point a, t_point b)
+static inline int	calculate_distance(t_point a, t_point b)
 {
 	return (ABC(a.x - b.x) + ABC(a.y - b.y));
 }
 
-static int 	define_min_distance(t_player player, int max_dist, t_point node)
+static int			define_min_distance(t_player player, int max_dist,
+						t_point node)
 {
-	int 	index;
-	int 	distance;
-	int 	tmp;
+	int	index;
+	int	distance;
+	int	tmp;
 
 	distance = max_dist;
 	index = 0;
@@ -25,9 +34,9 @@ static int 	define_min_distance(t_player player, int max_dist, t_point node)
 	return (distance);
 }
 
-int	 	**get_heatmap(t_map plateau, t_player me, t_player enemy)
+int					**get_heatmap(t_map plateau, t_player me, t_player enemy)
 {
-	int 		**heatmap;
+	int			**heatmap;
 	t_point		d;
 
 	d.y = 0;

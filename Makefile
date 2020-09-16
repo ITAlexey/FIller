@@ -12,8 +12,9 @@ SRC  = main\
 		get_heatmap\
 		parse_input\
 		place_token\
-		record_player_positions\
-		conditions
+		token\
+		conditions\
+		algorithm
 
 VPATH = src
 
