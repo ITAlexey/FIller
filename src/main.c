@@ -23,36 +23,19 @@ void	free_data_game(t_game data)
 	ft_memdel((void**)&data.result);
 }
 
-static short 	skip_header(char *input)
-{
-	short id;
-	short counter;
-
-	counter = 0;
-	id = -1;
-	while (counter < 9 && get_next_line(STDOUT, &input))
-	{
-		if (!ft_strncmp(input, "$$$ exec p", 10) && ft_strstr(input, "dshala"))
-			id = input[10] == '1' ? 1 : 0;
-		ft_strdel(&input);
-		counter++;
-	}
-	return (id);
-}
-
 int		main(void)
 {
 	t_game		data;
 	char		*input;
-	short 		id;
 	short		game_running;
 
 	game_running = TRUE;
 	input = NULL;
-	if ((id = skip_header(input)) != -1)
+	if (get_next_line(STDOUT, &input) && !ft_strncmp(input, "$$$ exec p", 10))
 	{
-		data.me.id = id == 1 ? 'O' : 'X';
+		data.me.id = input[10] == '1' ? 'O' : 'X';
 		data.enemy.id = data.me.id == 'O' ? 'X' : 'O';
+		ft_strdel(&input);
 		while (game_running)
 			game_running = parse_input(data);
 	}
