@@ -84,8 +84,11 @@ int			parse_input(t_game data)
 {
 	char	*line;
 
+	int fd = open("log_test", O_RDWR | O_APPEND);
 	while (get_next_line(STDOUT, &line))
 	{
+		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
 		if (!ft_strncmp(line, "Plateau", 7))
 		{
 			record_data(&data.plateau, line, 4);
@@ -97,10 +100,12 @@ int			parse_input(t_game data)
 		{
 			record_data(&data.piece, line, 0);
 			record_token_positions(&data.token, data.piece);
+			close(fd);
 			return (place_token(data));
 		}
 		else
 			ft_strdel(&line);
 	}
+	close(fd);
 	return (0);
 }

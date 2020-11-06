@@ -1,4 +1,5 @@
-seed = 7759
+seed = 7994
+./dshala.filler: Segfault at 0
 ./champions/abanlin.filler won
 Score:
-33AGAINST45
+0AGAINST145
