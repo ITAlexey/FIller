@@ -35,15 +35,14 @@ static inline t_point	define_min(t_point d, t_point *min)
 void					record_token_positions(t_token *token, t_map peace)
 {
 	t_point		d;
-	t_point		min;
 	int			index;
 
 	token->cells = define_nbr_of_elements(peace, STAR);
 	token->positions = (t_point*)ft_memalloc(sizeof(t_point) * token->cells);
 	ISNOTNULL(token->positions);
 	index = 0;
-	min.x = peace.width;
-	min.y = peace.height;
+	token->min.x = peace.width;
+	token->min.y = peace.height;
 	d.y = 0;
 	while (d.y < peace.height)
 	{
@@ -51,10 +50,10 @@ void					record_token_positions(t_token *token, t_map peace)
 		while (d.x < peace.width)
 		{
 			if (peace.grid[d.y][d.x] == STAR)
-				token->positions[index++] = define_min(d, &min);
+				token->positions[index++] = define_min(d, &token->min);
 			d.x++;
 		}
 		d.y++;
 	}
-	align_by_left_edge(token, min);
+	align_by_left_edge(token, token->min);
 }

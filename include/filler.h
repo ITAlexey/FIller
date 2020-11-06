@@ -36,6 +36,7 @@ typedef struct	s_token
 	int			cells;
 	t_point		*positions;
 	t_point		**placed_tokens;
+	t_point		min;
 	int			valid_pos;
 }				t_token;
 

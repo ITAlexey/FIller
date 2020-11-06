@@ -67,7 +67,10 @@ static short		is_one_align_overlap(t_point *nodes, int size,
 		while (j < player.size)
 		{
 			if (is_on_same_positions(nodes[i], player.positions[j]))
+			{
 				count_overlaps++;
+				break ;
+			}
 			j++;
 		}
 		i++;

@@ -72,7 +72,7 @@ static void	record_data(t_map *map, char *input, int offset)
 	}
 	map->grid = (char **)ft_memalloc(sizeof(char*) * map->height);
 	ISNOTNULL(map->grid);
-	while (index < map->height && get_next_line(STDOUT, &input) > 0)
+	while (index < map->height && get_next_line(STDOUT, &input))
 	{
 		map->grid[index] = ft_strdup(input + offset);
 		ISNOTNULL(map->grid[index++]);
@@ -84,7 +84,7 @@ int			parse_input(t_game data)
 {
 	char	*line;
 
-	while (get_next_line(STDOUT, &line) > 0)
+	while (get_next_line(STDOUT, &line))
 	{
 		if (!ft_strncmp(line, "Plateau", 7))
 		{

@@ -31,7 +31,7 @@ int		main(void)
 
 	game_running = TRUE;
 	input = NULL;
-	if (get_next_line(STDOUT, &input) >= 0 && ft_strlen(input) > 10
+	if (get_next_line(STDOUT, &input) && ft_strlen(input) > 10
 		&& !ft_strncmp(input, "$$$ exec p", 10)
 		&& (input[10] == '1' || input[10] == '2'))
 	{

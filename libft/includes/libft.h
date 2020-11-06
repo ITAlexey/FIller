@@ -24,7 +24,7 @@
 # define ISNULL(pointer) if ((pointer) == NULL) return (NULL)
 # define TRUE 1
 # define FALSE 0
-# define BUFF_SIZE 17
+# define BUFF_SIZE 1
 
 typedef struct		s_list
 {

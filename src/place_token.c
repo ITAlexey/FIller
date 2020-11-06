@@ -12,8 +12,7 @@
 
 #include "filler.h"
 
-static void			find_best_place(t_token token, int *min_sum,
-							int **heatmap, t_point *res)
+static void			find_best_place(t_token token, int **heatmap, t_point *res, int *min)
 {
 	t_point		d;
 	t_point		candidate;
@@ -30,21 +29,23 @@ static void			find_best_place(t_token token, int *min_sum,
 			sum += heatmap[candidate.y][candidate.x];
 			d.x++;
 		}
-		if (sum < *min_sum)
+		if (sum < *min)
 		{
-			*min_sum = sum;
-			res->x = token.placed_tokens[d.y][0].x;
-			res->y = token.placed_tokens[d.y][0].y;
+			*min = sum;
+			res->x = token.placed_tokens[d.y][0].x - token.positions[0].x - token.min.x;
+			res->y = token.placed_tokens[d.y][0].y - token.positions[0].y - token.min.y;
 		}
 		d.y++;
 	}
 }
 
-static void			find_candidate(t_game data, int min_sum, short *is_match)
+static void			find_candidate(t_game data)
 {
 	int	index;
+	int min;
 
 	index = 0;
+	min = data.plateau.width * data.plateau.height;
 	while (index < data.me.size)
 	{
 		data.token.placed_tokens =
@@ -53,25 +54,45 @@ static void			find_candidate(t_game data, int min_sum, short *is_match)
 		data.token.valid_pos = 0;
 		if (get_valid_states(data, data.me.positions[index++],
 				&data.token.valid_pos, 0))
-		{
-			*is_match = TRUE;
-			find_best_place(data.token, &min_sum, data.heatmap, data.result);
-		}
+			find_best_place(data.token, data.heatmap, data.result, &min);
 		ft_2dmemdel((void**)data.token.placed_tokens, data.token.cells);
 	}
 }
 
+void 				print_hm(int **hm, int y, int x)
+{
+	printf("\t");
+	for (int i = 0; i < y; i++)
+		printf("%02d  ", i);
+	printf("\n");
+	for (int i = 0; i < y; i++)
+	{
+		printf("%03d\t", i);
+		for (int j = 0; j < x; j++)
+		{
+			if (hm[i][j] == -1)
+				printf(" E");
+			else if (hm[i][j] == -2)
+				printf(" M");
+			else
+				printf("%02d", hm[i][j]);
+			printf("  ");
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
 int					place_token(t_game data)
 {
-	int		min_sum;
-	short	is_match;
+	short	is_continue;
 
-	is_match = FALSE;
+	is_continue = TRUE;
 	data.result = (t_point*)ft_memalloc(sizeof(t_point));
-	min_sum = data.token.cells * data.plateau.size;
-	find_candidate(data, min_sum, &is_match);
-	is_match ? ft_printf("%d %d\n", data.result->y, data.result->x)
-		: ft_printf("%d %d\n", 0, 0);
+	//print_hm(data.heatmap, data.plateau.height, data.plateau.width);
+	find_candidate(data);
+	ft_printf("%d %d\n", data.result->y, data.result->x);
+	is_continue = data.result->x != 0 && data.result->y != 0 ? TRUE : FALSE;
 	free_data_game(data);
-	return (is_match ? TRUE : FALSE);
+	return (is_continue);
 }
